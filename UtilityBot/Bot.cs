@@ -14,16 +14,6 @@ namespace UtilityBot
 {
     internal class Bot : BackgroundService
     {
-        /// <summary>
-        /// объект, отвеающий за отправку сообщений клиенту
-        /// </summary>
-        //private TelegramBotClient _telegramClient;
-
-        //public Bot(TelegramBotClient telegramClient)
-        //{
-        //    _telegramClient = telegramClient;
-        //}
-
         private ITelegramBotClient _telegramClient;
 
         public Bot(ITelegramBotClient telegramClient)
@@ -43,21 +33,11 @@ namespace UtilityBot
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
             if (update.Type == UpdateType.CallbackQuery)
-            {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы нажали кнопку " + update.CallbackQuery, cancellationToken: cancellationToken);
-                Console.WriteLine("Вы нажали кнопку " + update.CallbackQuery.Message.Text);
-                return;
-            }
-
-            // Обрабатываем входящие сообщения из Telegram Bot API: https://core.telegram.org/bots/api#message
-            if (update.Type == UpdateType.Message)
-            {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы отправили сообщение " + update.Message.Text, cancellationToken: cancellationToken);
-                Console.WriteLine("Получено сообщение " + update.Message.Text);
-                return;
-            }
+                await _telegramClient.SendTextMessageAsync(
+                    update.Message.Chat.Id,
+                    $"Длина сообщения: {update.Message.Text.Length} знаков",
+                    cancellationToken: cancellationToken);
         }
 
         Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -79,24 +59,5 @@ namespace UtilityBot
 
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Обработчик входящих текстовых сообщений  
-        /// </summary>
-        //private async Task HandleMessage(object sender, MessageEventArgs e)
-        //{
-        //    // Бот получил входящее сообщение пользователя
-        //    var messageText = e.Message.Text;
-
-        //    // Бот Отправляет ответ
-        //    _telegramClient.SendTextMessage(e.ChatId, "Ответ на сообщение пользователя")
-        //}
-
-        /// <summary>
-        /// Обработчик нажатий на кнопки
-        /// </summary>
-        //private async Task HandleButtonClick(object sender, MessageEventArgs e)
-        //{
-        //}
     }
 }
