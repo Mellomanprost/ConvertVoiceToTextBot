@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using ConvertVoiceToTextBot.Controllers;
 using ConvertVoiceToTextBot.Services;
+using ConvertVoiceToTextBot.Configuration;
 
 namespace ConvertVoiceToTextBot
 {
@@ -29,6 +30,13 @@ namespace ConvertVoiceToTextBot
 
         static void ConfigureServices(IServiceCollection services)
         {
+            // Инициализация конфигурации
+            AppSettings appSettings = BuildAppSettings();
+            services.AddSingleton(BuildAppSettings());
+
+            // Инициализация сервиса памяти
+            services.AddSingleton<IStorage, MemoryStorage>();
+
             // Подключаем контроллеры сообщений и кнопок
             services.AddTransient<DefaultMessageController>();
             services.AddTransient<VoiceMessageController>();
@@ -37,9 +45,16 @@ namespace ConvertVoiceToTextBot
 
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5690603951:AAGu760fKaSGsMxkWz_MT1EEti4yKPWPFqQ"));
-            services.AddSingleton<IStorage, MemoryStorage>();
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
+        }
+
+        static AppSettings BuildAppSettings()
+        {
+            return new AppSettings()
+            {
+                BotToken = "5690603951:AAGu760fKaSGsMxkWz_MT1EEti4yKPWPFqQ"
+            };
         }
     }
 }
