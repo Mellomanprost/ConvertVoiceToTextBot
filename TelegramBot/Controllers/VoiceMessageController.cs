@@ -8,7 +8,7 @@ using Telegram.Bot.Types;
 
 namespace ConvertVoiceToTextBot.Controllers
 {
-    class VoiceMessageController
+    public class VoiceMessageController
     {
         private readonly ITelegramBotClient _telegramClient;
 

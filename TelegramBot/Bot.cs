@@ -9,27 +9,35 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using ConvertVoiceToTextBot.Controllers;
 
 namespace ConvertVoiceToTextBot
 {
     internal class Bot : BackgroundService
     {
-        /// <summary>
-        /// объект, отвеающий за отправку сообщений клиенту
-        /// </summary>
-        //private TelegramBotClient _telegramClient;
-
-        //public Bot(TelegramBotClient telegramClient)
-        //{
-        //    _telegramClient = telegramClient;
-        //}
-
+        // Клиент к Telegram Bot API
         private ITelegramBotClient _telegramClient;
 
-        public Bot(ITelegramBotClient telegramClient)
+        // Контроллеры различных видов сообщений
+        private InlineKeyboardController _inlineKeyboardController;
+        private TextMessageController _textMessageController;
+        private VoiceMessageController _voiceMessageController;
+        private DefaultMessageController _defaultMessageController;
+
+        public Bot(
+            ITelegramBotClient telegramClient,
+            InlineKeyboardController inlineKeyboardController,
+            TextMessageController textMessageController,
+            VoiceMessageController voiceMessageController,
+            DefaultMessageController defaultMessageController)
         {
             _telegramClient = telegramClient;
+            _inlineKeyboardController = inlineKeyboardController;
+            _textMessageController = textMessageController;
+            _voiceMessageController = voiceMessageController;
+            _defaultMessageController = defaultMessageController;
         }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _telegramClient.StartReceiving(
@@ -46,17 +54,25 @@ namespace ConvertVoiceToTextBot
             //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
             if (update.Type == UpdateType.CallbackQuery)
             {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы нажали кнопку " + update.CallbackQuery, cancellationToken: cancellationToken);
-                Console.WriteLine("Вы нажали кнопку " + update.CallbackQuery.Message.Text);
+                await _inlineKeyboardController.Handle(update.CallbackQuery, cancellationToken);
                 return;
             }
 
             // Обрабатываем входящие сообщения из Telegram Bot API: https://core.telegram.org/bots/api#message
             if (update.Type == UpdateType.Message)
             {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы отправили сообщение " + update.Message.Text, cancellationToken: cancellationToken);
-                Console.WriteLine("Получено сообщение " + update.Message.Text);
-                return;
+                switch (update.Message!.Type)
+                {
+                    case MessageType.Voice:
+                        await _voiceMessageController.Handle(update.Message, cancellationToken);
+                        return;
+                    case MessageType.Text:
+                        await _textMessageController.Handle(update.Message, cancellationToken);
+                        return;
+                    default:
+                        await _defaultMessageController.Handle(update.Message, cancellationToken);
+                        return;
+                }
             }
         }
 
@@ -79,24 +95,5 @@ namespace ConvertVoiceToTextBot
 
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Обработчик входящих текстовых сообщений  
-        /// </summary>
-        //private async Task HandleMessage(object sender, MessageEventArgs e)
-        //{
-        //    // Бот получил входящее сообщение пользователя
-        //    var messageText = e.Message.Text;
-
-        //    // Бот Отправляет ответ
-        //    _telegramClient.SendTextMessage(e.ChatId, "Ответ на сообщение пользователя")
-        //}
-
-        /// <summary>
-        /// Обработчик нажатий на кнопки
-        /// </summary>
-        //private async Task HandleButtonClick(object sender, MessageEventArgs e)
-        //{
-        //}
     }
 }
