@@ -61,6 +61,7 @@ namespace ConvertVoiceToTextBot
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
                 OutputAudioFormat = "wav",
+                InputAudioBitrate = 76800,
             };
         }
     }
