@@ -10,7 +10,7 @@ using Telegram.Bot;
 
 namespace ConvertVoiceToTextBot.Services
 {
-    class AudioFileHandler : IFileHandler
+    public class AudioFileHandler : IFileHandler
     {
         private readonly AppSettings _appSettings;
         private readonly ITelegramBotClient _telegramBotClient;
@@ -47,7 +47,10 @@ namespace ConvertVoiceToTextBot.Services
             AudioConverter.TryConvert(inputAudioPath, outputAudioPath);
             Console.WriteLine("Файл конвертирован");
 
-            return "Конвертация успешно завершена";
+            Console.WriteLine("Начинаем распознавание...");
+            var speechText = SpeechDetector.DetectSpeech(outputAudioPath, _appSettings.InputAudioBitrate, languageCode);
+            Console.WriteLine("Файл распознан.");
+            return speechText;
         }
     }
 }

@@ -31,18 +31,15 @@ namespace ConvertVoiceToTextBot.Controllers
         }
         public async Task Handle(Message message, CancellationToken ct)
         {
-            Console.WriteLine($"Контроллер {GetType().Name} получил сообщение");
             var fileId = message.Voice?.FileId;
             if (fileId == null)
                 return;
 
             await _audioFileHandler.Download(fileId, ct);
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообщение загружено", cancellationToken: ct);
 
-            string userLanguage = _memoryStorage.GetSession(message.Chat.Id).LanguageCode;  // Получаем выбранный пользователем язык.
-            _audioFileHandler.Process(userLanguage);
-
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообщение конвертировано в формат .wav", cancellationToken: ct);
+            string userLanguageCode = _memoryStorage.GetSession(message.Chat.Id).LanguageCode; // Здесь получим язык из сессии пользователя
+            var result = _audioFileHandler.Process(userLanguageCode); // Запустим обработку
+            await _telegramClient.SendTextMessageAsync(message.Chat.Id, result, cancellationToken: ct);
         }
     }
 }
