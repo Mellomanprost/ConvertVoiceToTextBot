@@ -37,6 +37,9 @@ namespace ConvertVoiceToTextBot
             // Инициализация сервиса памяти
             services.AddSingleton<IStorage, MemoryStorage>();
 
+            // Инициализация сервиса обработки аудио файлов
+            services.AddSingleton<IFileHandler, AudioFileHandler>();
+
             // Подключаем контроллеры сообщений и кнопок
             services.AddTransient<DefaultMessageController>();
             services.AddTransient<VoiceMessageController>();
@@ -53,7 +56,10 @@ namespace ConvertVoiceToTextBot
         {
             return new AppSettings()
             {
-                BotToken = "5690603951:AAGu760fKaSGsMxkWz_MT1EEti4yKPWPFqQ"
+                DownloadsFolder = "c:\\Users\\LEGION 5\\Downloads",
+                BotToken = "5690603951:AAGu760fKaSGsMxkWz_MT1EEti4yKPWPFqQ",
+                AudioFileName = "audio",
+                InputAudioFormat = "ogg",
             };
         }
     }
