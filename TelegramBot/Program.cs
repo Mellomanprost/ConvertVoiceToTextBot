@@ -60,6 +60,7 @@ namespace ConvertVoiceToTextBot
                 BotToken = "5690603951:AAGu760fKaSGsMxkWz_MT1EEti4yKPWPFqQ",
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
+                OutputAudioFormat = "wav",
             };
         }
     }
