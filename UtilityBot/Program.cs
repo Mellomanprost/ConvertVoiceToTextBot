@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
+using UtilityBot.Configuration;
+using UtilityBot.Controllers;
+using UtilityBot.Services;
 
 namespace UtilityBot
 {
@@ -27,10 +30,31 @@ namespace UtilityBot
 
         static void ConfigureServices(IServiceCollection services)
         {
+            // Инициализация конфигурации
+            AppSettings appSettings = BuildAppSettings();
+            services.AddSingleton(BuildAppSettings());
+
+            // Инициализация сервиса памяти
+            services.AddSingleton<IStorage, MemoryStorage>();
+
+            // Подключаем контроллеры сообщений и кнопок
+            services.AddTransient<TextMessageController>();
+            services.AddTransient<InlineKeyboardController>();
+            services.AddTransient<DefaultMessageController>();
+
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5646884809:AAHmtH5yNUDDq09Sd8_EE9uu_YrTnH0e85Q"));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }
+
+        static AppSettings BuildAppSettings()
+        {
+            return new AppSettings()
+            {
+                BotToken = "5646884809:AAHmtH5yNUDDq09Sd8_EE9uu_YrTnH0e85Q",
+            };
+        }
+
     }
 }

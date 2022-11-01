@@ -5,7 +5,8 @@ namespace UtilityBot.Services
 {
     public interface IFileHandler
     {
-        Task Download(string fileId, CancellationToken ct);
-        string Process(string param);
+        string NumberOfCharactersProcess(string param);
+        string CalculatingTheSumProcess(string param);
+
     }
 }

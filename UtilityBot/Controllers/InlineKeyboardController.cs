@@ -26,19 +26,19 @@ namespace UtilityBot.Controllers
                 return;
 
             // Обновление пользовательской сессии новыми данными
-            _memoryStorage.GetSession(callbackQuery.From.Id).LanguageCode = callbackQuery.Data;
+            _memoryStorage.GetSession(callbackQuery.From.Id).BotFunction = callbackQuery.Data;
 
             // Генерим информационное сообщение
-            string languageText = callbackQuery.Data switch
+            string botFunction = callbackQuery.Data switch
             {
-                "ru" => " Русский",
-                "en" => " Английский",
+                "func1" => " Подсчет количества символов",
+                "func2" => " Вычисление суммы чисел",
                 _ => String.Empty
             };
 
             // Отправляем в ответ уведомление о выборе
             await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id,
-                $"<b>Язык аудио - {languageText}.{Environment.NewLine}</b>" +
+                $"<b>Выбрана функция - {botFunction}.{Environment.NewLine}</b>" +
                 $"{Environment.NewLine}Можно поменять в главном меню.", cancellationToken: ct, parseMode: ParseMode.Html);
         }
     }

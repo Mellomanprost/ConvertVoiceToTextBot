@@ -6,7 +6,7 @@ namespace UtilityBot.Models
 {
     public class Session
     {
-        public string LanguageCode { get; set; }
+        public string BotFunction { get; set; }
 
     }
 }

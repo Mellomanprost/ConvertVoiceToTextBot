@@ -4,7 +4,11 @@ using System.Text;
 
 namespace UtilityBot.Configuration
 {
-    class AppSettings
+    public class AppSettings
     {
+        /// <summary>
+        /// Токен Telegram API
+        /// </summary>
+        public string BotToken { get; set; }
     }
 }
