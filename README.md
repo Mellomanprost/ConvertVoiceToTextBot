@@ -1,7 +1,7 @@
 # ConvertVoiceToTextBot
   Solution includes two programs:
-  First "ConvertVoiceToTextBot"
-  Second "UtilityBot"
+  -First "ConvertVoiceToTextBot"
+  -Second "UtilityBot"
 
 ## ConvertVoiceToTextBot
 Telegram Bot with function to convert voice message to text message.
