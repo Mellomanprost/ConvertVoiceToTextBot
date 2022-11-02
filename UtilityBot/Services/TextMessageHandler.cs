@@ -17,12 +17,14 @@ namespace UtilityBot.Services
             string[] numbers = botfunction.Split(new char[] { ' ' });
             foreach (var item in numbers)
             {
-                sum += Convert.ToDouble(item);
+                double.TryParse(item, out double res);
+                sum += res;
             }
 
             string result = $"Сумма чисел: {sum}";
             Console.WriteLine("Файл распознан.");
             return result;
+            
         }
     }
 }
