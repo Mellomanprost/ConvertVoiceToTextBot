@@ -56,6 +56,5 @@ namespace UtilityBot
                 BotToken = "5646884809:AAHmtH5yNUDDq09Sd8_EE9uu_YrTnH0e85Q",
             };
         }
-
     }
 }

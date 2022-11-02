@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -12,13 +9,11 @@ namespace UtilityBot.Controllers
     public class FunctionController
     {
         private readonly ITelegramBotClient _telegramClient;
-        //private readonly IFileHandler _textMessageHandler;
         private readonly IStorage _memoryStorage;
 
         public FunctionController(ITelegramBotClient telegramBotClient, IStorage memoryStorage)
         {
             _telegramClient = telegramBotClient;
-            //_textMessageHandler = textMessageHandler;
             _memoryStorage = memoryStorage;
         }
 
@@ -37,6 +32,5 @@ namespace UtilityBot.Controllers
                 await _telegramClient.SendTextMessageAsync(message.Chat.Id, result, cancellationToken: ct);
             }
         }
-
     }
 }
