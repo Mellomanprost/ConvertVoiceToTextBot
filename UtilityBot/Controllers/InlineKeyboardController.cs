@@ -29,7 +29,7 @@ namespace UtilityBot.Controllers
             _memoryStorage.GetSession(callbackQuery.From.Id).BotFunction = callbackQuery.Data;
 
             // Генерим информационное сообщение
-            string botFunction = callbackQuery.Data switch
+            string botFunctionText = callbackQuery.Data switch
             {
                 "func1" => " Подсчет количества символов",
                 "func2" => " Вычисление суммы чисел",
@@ -38,7 +38,7 @@ namespace UtilityBot.Controllers
 
             // Отправляем в ответ уведомление о выборе
             await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id,
-                $"<b>Выбрана функция - {botFunction}.{Environment.NewLine}</b>" +
+                $"<b>Выбрана функция - {botFunctionText}.{Environment.NewLine}</b>" +
                 $"{Environment.NewLine}Можно поменять в главном меню.", cancellationToken: ct, parseMode: ParseMode.Html);
         }
     }

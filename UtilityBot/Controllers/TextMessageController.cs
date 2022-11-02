@@ -29,8 +29,8 @@ namespace UtilityBot.Controllers
                     var buttons = new List<InlineKeyboardButton[]>();
                     buttons.Add(new[]
                     {
-                        InlineKeyboardButton.WithCallbackData($" Подсчет количества символов" , $"func1"), // Изменить
-                        InlineKeyboardButton.WithCallbackData($" Вычисление суммы чисел" , $"func2") // Изменить
+                        InlineKeyboardButton.WithCallbackData($" Подсчет количества символов" , $"func1"),
+                        InlineKeyboardButton.WithCallbackData($" Вычисление суммы чисел" , $"func2")
                     });
 
                     // передаем кнопки вместе с сообщением (параметр ReplyMarkup)

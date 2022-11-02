@@ -22,17 +22,20 @@ namespace UtilityBot
         private InlineKeyboardController _inlineKeyboardController;
         private TextMessageController _textMessageController;
         private DefaultMessageController _defaultMessageController;
+        private FunctionController _functionController;
 
         public Bot(
             ITelegramBotClient telegramClient,
             InlineKeyboardController inlineKeyboardController,
             TextMessageController textMessageController,
-            DefaultMessageController defaultMessageController)
+            DefaultMessageController defaultMessageController,
+            FunctionController functionController)
         {
             _telegramClient = telegramClient;
             _inlineKeyboardController = inlineKeyboardController;
             _textMessageController = textMessageController;
             _defaultMessageController = defaultMessageController;
+            _functionController = functionController;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -61,7 +64,10 @@ namespace UtilityBot
                 switch (update.Message!.Type)
                 {
                     case MessageType.Text:
-                        await _telegramClient.SendTextMessageAsync(update.Message.From.Id, $"Длина сообщения: {update.Message.Text.Length} знаков", cancellationToken: cancellationToken);
+                        if (update.Message.Text == "/start")
+                            await _textMessageController.Handle(update.Message, cancellationToken);
+                        else
+                            await _functionController.Handle(update.Message, cancellationToken);
                         return;
                     default:
                         await _defaultMessageController.Handle(update.Message, cancellationToken);

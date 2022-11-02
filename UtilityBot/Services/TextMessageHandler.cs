@@ -9,16 +9,14 @@ using UtilityBot.Configuration;
 
 namespace UtilityBot.Services
 {
-    public class TextMessageHandler : IFileHandler
+    public class TextMessageHandler
     {
-        private readonly AppSettings _appSettings;
-        private readonly ITelegramBotClient _telegramBotClient;
+        //private readonly ITelegramBotClient _telegramBotClient;
 
-        public TextMessageHandler(ITelegramBotClient telegramBotClient, AppSettings appSettings)
-        {
-            _appSettings = appSettings;
-            _telegramBotClient = telegramBotClient;
-        }
+        //public TextMessageHandler(ITelegramBotClient telegramBotClient)
+        //{
+        //    _telegramBotClient = telegramBotClient;
+        //}
 
         public string NumberOfCharactersProcess(string botfunction)
         {

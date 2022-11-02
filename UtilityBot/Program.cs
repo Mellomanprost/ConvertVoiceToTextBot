@@ -41,6 +41,7 @@ namespace UtilityBot
             services.AddTransient<TextMessageController>();
             services.AddTransient<InlineKeyboardController>();
             services.AddTransient<DefaultMessageController>();
+            services.AddTransient<FunctionController>();
 
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5646884809:AAHmtH5yNUDDq09Sd8_EE9uu_YrTnH0e85Q"));
